@@ -1,0 +1,26 @@
+name: "Build + Publish dev-container"
+
+on:
+  release:
+    - published
+
+env:
+  CONTAINER_REGISTRY: "quay.io"
+  USERNAME: ${{ secret }}
+  AUTH: ${{ secrets.QUAY_API_KEY }}
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Builds and publishes the Docker image
+      run: |
+        echo "Building and publishing dev-container version ${{ github.ref_name }}"
+        echo ${{ env.AUTH }} | docker login ${{ env.CONTAINER_REGISTRY }} --username 
+        docker build . \
+          -f Dockerfile \
+          --platform linux/amd64,linux/arm64 \
+          --tag dev-container:${{ github.ref_name }} \
+          --tag dev-container:latest \
+          --push

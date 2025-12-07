@@ -5,7 +5,7 @@ COPY ./nvim-install.sh /tmp/nvim-install.sh
 
 # System wide configuration
 RUN apt update -y && apt full-upgrade -y && \
-    apt install build-essential gdb sudo zsh curl wget git tmux luarocks lazygit ripgrep default-jdk -y && \
+    apt install build-essential gdb sudo zsh curl wget git tmux luarocks lazygit ripgrep default-jdk nodejs npm -y && \
     useradd -m -s $(which zsh) dev && \
     echo "dev:dev" | chpasswd && \
     usermod -aG sudo dev && \
